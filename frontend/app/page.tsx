@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Loader2, X, RefreshCw } from "lucide-react";
+import { Loader2, X, RefreshCw, Info } from "lucide-react";
 import clsx from "clsx";
-import { api } from "./lib/api";
+import { api, isDemoMode } from "./lib/api";
 import type { ItemOut, HistoryPoint } from "./lib/types";
 import { formatCents, specSubtitle } from "./lib/format";
 import { Header } from "./components/Header";
@@ -21,13 +21,17 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selected, setSelected] = useState<ItemOut | null>(null);
+  const [demoMode, setDemoMode] = useState(false);
 
   useEffect(() => {
     let alive = true;
     api
       .listItems()
       .then((data) => {
-        if (alive) setItems(data);
+        if (alive) {
+          setItems(data);
+          setDemoMode(isDemoMode());
+        }
       })
       .catch(() => {
         // backend may not be up yet — render empty grid + track form
@@ -75,6 +79,8 @@ export default function Home() {
         refreshing={refreshing}
       />
 
+      {demoMode && <DemoBanner />}
+
       <TrackForm onTracked={upsertItem} />
 
       <section className="mx-auto max-w-6xl px-5 sm:px-8 pb-24">
@@ -116,6 +122,30 @@ export default function Home() {
 }
 
 // ---------------------------------------------------------------------------
+
+function DemoBanner() {
+  return (
+    <div className="mx-auto max-w-6xl px-5 sm:px-8 pt-5">
+      <div className="flex items-start gap-2.5 rounded-md border border-[var(--accent)]/30 bg-[var(--accent)]/5 px-4 py-3">
+        <Info size={15} className="mt-0.5 text-[var(--accent)] shrink-0" />
+        <div className="text-sm text-[var(--foreground)] leading-snug">
+          <span className="font-medium text-[var(--accent)]">
+            Showing demo data.
+          </span>{" "}
+          <span className="text-[var(--muted)]">
+            Run the backend locally (
+            <code className="text-[var(--foreground)] font-mono">
+              uv run uvicorn app.main:app --reload
+            </code>
+            ) for live scrapes, AI verdicts you can refresh, and the retroactive
+            overpay detector. The chart, prices, and buy-signal you see below
+            are from a baked-in snapshot of a real scrape.
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function EmptyState() {
   return (
