@@ -27,6 +27,15 @@ from app.schemas import (
 from app.scraper import ScrapeResult, scrape_many
 from app.seed_skus import SEED, find_seed_for_url, find_seed_by_sku
 
+# Swarm Agent C exposes apply_affiliate_to_url(url, retailer) -> str | None.
+# Until that module lands, fall back to no-op so routes still work.
+try:
+    from app.affiliate import apply_affiliate_to_url  # type: ignore[import-not-found]
+except ImportError:
+    def apply_affiliate_to_url(url: str, retailer: str) -> str | None:  # noqa: D401
+        return None
+
+
 router = APIRouter()
 
 
@@ -133,7 +142,8 @@ async def _build_item_out(db: AsyncSession, item: Item) -> ItemOut:
                 id=listing.id,
                 retailer=listing.retailer,
                 url=listing.url,
-                affiliate_url=listing.affiliate_url,
+                affiliate_url=listing.affiliate_url
+                or apply_affiliate_to_url(listing.url, listing.retailer),
                 variant=listing.variant,
                 last_price_cents=last_price,
                 last_seen_at=listing.last_seen_at,
