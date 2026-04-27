@@ -2,7 +2,7 @@
 
 > The only product URLs RAMifications will accept. Anything outside this list returns `422` with a "url not in seeded SKU set" error.
 
-RAMifications v1 ships with **3 hand-curated DDR5 RAM SKUs**. Auto-canonicalization of arbitrary URLs is a real NLP problem we punted on (see [Presentation.md](./Presentation.md) → "What's next" for the v2 plan).
+RAMifications v1 ships with **4 hand-curated DDR5 RAM SKUs**. Auto-canonicalization of arbitrary URLs is a real NLP problem we punted on (see [Presentation.md](./Presentation.md) → "What's next" for the v2 plan).
 
 ---
 
@@ -16,7 +16,7 @@ Pasting this triggers a parallel scrape of **all three retailers** (Newegg + B&H
 
 ---
 
-## All five fetchable URLs
+## All seven fetchable URLs
 
 | # | URL | Resolves to canonical SKU | Retailers tracked |
 |---|---|---|---|
@@ -25,8 +25,15 @@ Pasting this triggers a parallel scrape of **all three retailers** (Newegg + B&H
 | 3 | `https://www.microcenter.com/product/669660/corsair-vengeance-32gb-(2-x-16gb)-ddr5-6000-pc5-48000-cl30-dual-channel-desktop-memory-kit-cmk32gx5m2b6000c30-black` | same as #1 | same — 3 retailers |
 | 4 | `https://www.newegg.com/p/3C6-034Y-00350` | `gskill-trident-z5-royal-neo-32gb-ddr5-6000` | 1 — Newegg (CL30 AMD EXPO) |
 | 5 | `https://www.newegg.com/p/0RN-0005-00JE0` | `crucial-pro-32gb-ddr5-5600` | 1 — Newegg (CL46) |
+| 6 | `https://www.newegg.com/kingston-technology-corp-fury-beast-32gb-ddr5-6000-cas-latency-cl30-memory-black/p/N82E16820242860` | `kingston-fury-beast-32gb-ddr5-6000` | **2** — Newegg (CL30 Black) + Micro Center (CL30 RGB) |
+| 7 | `https://www.microcenter.com/product/706975/kingston-fury-beast-rgb-32gb-(2-x-16gb)-ddr5-6000-pc5-48000-cl30-dual-channel-desktop-memory-kit-kf560c30bbeak2-32-black` | same as #6 | same — 2 retailers |
 
-URLs **1, 2, and 3** all resolve to the same canonical SKU — paste any of them and you get the same 3-retailer card. URLs **4 and 5** add the other two SKUs as single-retailer cards.
+- URLs **1, 2, 3** → the same Corsair card (3 retailers in chart)
+- URLs **6, 7** → the same Kingston card (2 retailers in chart)
+- URL **4** → G.Skill (single retailer — niche premium kit not stocked elsewhere)
+- URL **5** → Crucial (single retailer — Micro Center only carries the 64GB variant of this line, conflating sizes would muddle the buy-signal)
+
+7 URLs → **4 cards** on the home page. Two of those cards have multi-retailer charts.
 
 ---
 

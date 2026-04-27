@@ -88,6 +88,26 @@ SEED: tuple[SeedItem, ...] = (
             ),
         ),
     ),
+    SeedItem(
+        canonical_sku="kingston-fury-beast-32gb-ddr5-6000",
+        brand="Kingston",
+        model="FURY Beast",
+        capacity_gb=32,
+        speed_mts=6000,
+        cas=30,
+        listings=(
+            SeedListing(
+                retailer="newegg",
+                url="https://www.newegg.com/kingston-technology-corp-fury-beast-32gb-ddr5-6000-cas-latency-cl30-memory-black/p/N82E16820242860",
+                variant="CL30 Black",
+            ),
+            SeedListing(
+                retailer="microcenter",
+                url="https://www.microcenter.com/product/706975/kingston-fury-beast-rgb-32gb-(2-x-16gb)-ddr5-6000-pc5-48000-cl30-dual-channel-desktop-memory-kit-kf560c30bbeak2-32-black",
+                variant="CL30 RGB",
+            ),
+        ),
+    ),
 )
 
 

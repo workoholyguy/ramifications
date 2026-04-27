@@ -73,6 +73,10 @@ const MICROCENTER_CORSAIR_URL =
   "https://www.microcenter.com/product/669660/corsair-vengeance-32gb-(2-x-16gb)-ddr5-6000-pc5-48000-cl30-dual-channel-desktop-memory-kit-cmk32gx5m2b6000c30-black";
 const NEWEGG_GSKILL_URL = "https://www.newegg.com/p/3C6-034Y-00350";
 const NEWEGG_CRUCIAL_URL = "https://www.newegg.com/p/0RN-0005-00JE0";
+const NEWEGG_KINGSTON_URL =
+  "https://www.newegg.com/kingston-technology-corp-fury-beast-32gb-ddr5-6000-cas-latency-cl30-memory-black/p/N82E16820242860";
+const MICROCENTER_KINGSTON_URL =
+  "https://www.microcenter.com/product/706975/kingston-fury-beast-rgb-32gb-(2-x-16gb)-ddr5-6000-pc5-48000-cl30-dual-channel-desktop-memory-kit-kf560c30bbeak2-32-black";
 
 // affiliate URLs match what backend's affiliate.py would emit
 const AFF = {
@@ -175,6 +179,39 @@ export const MOCK_ITEMS: ItemOut[] = [
       },
     ],
   },
+  {
+    id: 4,
+    canonical_sku: "kingston-fury-beast-32gb-ddr5-6000",
+    brand: "Kingston",
+    model: "FURY Beast",
+    capacity_gb: 32,
+    speed_mts: 6000,
+    cas: 30,
+    image_url:
+      "https://c1.neweggimages.com/ProductImageCompressAll300/N82E16820242860_1.jpg",
+    cheapest_price_cents: 48999,
+    cheapest_retailer: "newegg",
+    listings: [
+      {
+        id: 6,
+        retailer: "newegg",
+        url: NEWEGG_KINGSTON_URL,
+        affiliate_url: AFF.newegg(NEWEGG_KINGSTON_URL),
+        variant: "CL30 Black",
+        last_price_cents: 48999,
+        last_seen_at: NOW,
+      },
+      {
+        id: 7,
+        retailer: "microcenter",
+        url: MICROCENTER_KINGSTON_URL,
+        affiliate_url: AFF.microcenter(),
+        variant: "CL30 RGB",
+        last_price_cents: 49999,
+        last_seen_at: NOW,
+      },
+    ],
+  },
 ];
 
 const ITEM_1_HISTORY: HistoryPoint[] = [
@@ -204,6 +241,14 @@ const ITEM_3_HISTORY: HistoryPoint[] = synthWalk(
   55,
 );
 
+const ITEM_4_HISTORY: HistoryPoint[] = [
+  ...synthWalk(6, "newegg", "CL30 Black", 48999, 14, 66),
+  ...synthWalk(7, "microcenter", "CL30 RGB", 49999, 14, 77),
+].sort(
+  (a, b) =>
+    new Date(a.scraped_at).getTime() - new Date(b.scraped_at).getTime(),
+);
+
 export const MOCK_HISTORY: Record<number, HistoryOut> = {
   1: {
     item_id: 1,
@@ -219,6 +264,11 @@ export const MOCK_HISTORY: Record<number, HistoryOut> = {
     item_id: 3,
     canonical_sku: "crucial-pro-32gb-ddr5-5600",
     points: ITEM_3_HISTORY,
+  },
+  4: {
+    item_id: 4,
+    canonical_sku: "kingston-fury-beast-32gb-ddr5-6000",
+    points: ITEM_4_HISTORY,
   },
 };
 
@@ -244,6 +294,14 @@ export const MOCK_BUY_SIGNALS: Record<number, BuySignalOut> = {
     confidence: 0.69,
     reason:
       "Crucial Pro DDR5-5600 at $795.52 is near its weekly low and DRAM spot pricing remains tight; this is a defensible mid-tier buy.",
+    cached: true,
+    generated_at: NOW,
+  },
+  4: {
+    verdict: "BUY",
+    confidence: 0.74,
+    reason:
+      "Kingston FURY Beast at $489.99 (Newegg) is only 2.0% above its 30-day low; the $10 cross-retailer spread vs Micro Center RGB at $499.99 is within normal noise — solid entry point.",
     cached: true,
     generated_at: NOW,
   },
