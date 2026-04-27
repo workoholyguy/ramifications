@@ -69,6 +69,28 @@ pnpm install
 pnpm dev
 ```
 
+**For a populated demo chart**, after the backend is running track each SKU once via the UI, then run the synthetic-history backfill so the chart has 14 days of motion to plot:
+
+```bash
+cd backend
+uv run python -m scripts.seed_history          # 14 days of synthetic walk anchored on the live scrape
+uv run python -m scripts.seed_history --days 30 --noise 0.04   # bigger window / louder volatility
+```
+
+The script is idempotent — listings that already have multiple history points are skipped, so you can paste new SKUs and re-run safely.
+
+## Deploy frontend to Vercel
+
+The backend stays local for this build (workshop scope). The frontend deploys cold:
+
+1. Push this repo to GitHub (already done if you cloned `workoholyguy/ramifications`).
+2. Open <https://vercel.com/new> and import the repo.
+3. **Set Root Directory to `frontend`** in the Vercel project settings — the monorepo layout matters.
+4. Add env var `NEXT_PUBLIC_API_BASE` → `http://localhost:8000` (so the deployed page hits whoever runs the backend locally — convenient for solo demos).
+5. Click Deploy.
+
+Production-deploying the **backend** is the obvious v2 stretch — Fly.io for the Playwright runtime, neon Postgres in place of SQLite. See "What I'd do next" below.
+
 Then paste any of these into the Track form:
 
 - `https://www.newegg.com/corsair-vengeance-32gb-ddr5-6000-cas-latency-cl30-desktop-memory-gray/p/N82E16820982040`
