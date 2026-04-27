@@ -1,0 +1,40 @@
+# node
+node_modules/
+.next/
+out/
+.vercel/
+*.tsbuildinfo
+next-env.d.ts
+
+# python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+.python-version
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# uv
+uv.lock
+
+# env / secrets
+.env
+.env.local
+.env.*.local
+
+# db + screenshots (workshop dev only)
+*.db
+*.sqlite
+*.sqlite3
+screenshots/
+
+# os
+.DS_Store
+Thumbs.db
+
+# editors
+.vscode/
+.idea/
