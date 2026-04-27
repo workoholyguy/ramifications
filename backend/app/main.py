@@ -42,8 +42,22 @@ app.add_middleware(
 )
 
 app.include_router(core_router)
-# Phase 5 / Agent A appends: app.include_router(buy_signal.router)
-# Phase 8a / Agent C appends: app.include_router(affiliate.router)
+
+# Swarm-friendly optional routers: Agent A writes buy_signal.py, Agent C writes affiliate.py.
+# main.py is the merge boundary — neither agent edits this file, both modules auto-mount when present.
+try:
+    from app.buy_signal import router as buy_signal_router  # type: ignore[import-not-found]
+
+    app.include_router(buy_signal_router)
+except ImportError:
+    pass
+
+try:
+    from app.affiliate import router as affiliate_router  # type: ignore[import-not-found]
+
+    app.include_router(affiliate_router)
+except ImportError:
+    pass
 
 
 @app.get("/")

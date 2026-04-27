@@ -29,6 +29,17 @@ UA = (
 SCREENSHOT_DIR = Path(__file__).resolve().parent.parent / "screenshots"
 PRICE_RE = re.compile(r"\$\s?([\d,]+\.\d{2})")
 
+# Cloudflare-fronted retailers (e.g. B&H) reject bundled Chromium fingerprints AND
+# direct deep-links from a cold session. Visiting the homepage first acquires the
+# `cf_clearance` cookie, after which product pages render normally.
+WARMUP_HOSTS = {"bhphotovideo.com": "https://www.bhphotovideo.com/"}
+
+# Mask the most obvious headless automation tells before any site script runs.
+STEALTH_INIT_JS = (
+    "Object.defineProperty(navigator, 'webdriver', {get: () => undefined});"
+    "window.chrome = window.chrome || { runtime: {} };"
+)
+
 
 @dataclass
 class ScrapeResult:
@@ -173,16 +184,42 @@ async def _scrape_one(browser: Browser, url: str, take_screenshot: bool) -> Scra
         viewport={"width": 1366, "height": 900},
         locale="en-US",
     )
+    await context.add_init_script(STEALTH_INIT_JS)
     page = await context.new_page()
     screenshot_path: str | None = None
 
     try:
+        # Cloudflare warm-up: acquire clearance cookie via the homepage before
+        # deep-linking to the product page. Without this, B&H product URLs
+        # return the "Just a moment..." interstitial and EXTRACT_JS finds no DOM.
+        host = urlparse(url).netloc.lower().removeprefix("www.")
+        for domain, warmup_url in WARMUP_HOSTS.items():
+            if host.endswith(domain):
+                try:
+                    await page.goto(warmup_url, wait_until="domcontentloaded", timeout=20_000)
+                    try:
+                        await page.wait_for_load_state("networkidle", timeout=4_000)
+                    except Exception:
+                        pass
+                except Exception:
+                    pass  # warm-up best-effort; main goto still gets a chance
+                break
+
         await page.goto(url, wait_until="domcontentloaded", timeout=20_000)
         # let async price renderers settle
         try:
             await page.wait_for_load_state("networkidle", timeout=4_000)
         except Exception:
             pass
+        # B&H lazy-renders price; wait briefly for a price-bearing element.
+        if "bhphotovideo.com" in host:
+            try:
+                await page.wait_for_selector(
+                    'script[type="application/ld+json"], [data-selenium="pricingPrice"]',
+                    timeout=8_000,
+                )
+            except Exception:
+                pass
 
         data = await page.evaluate(EXTRACT_JS)
 
@@ -235,9 +272,21 @@ async def _scrape_one(browser: Browser, url: str, take_screenshot: bool) -> Scra
         await context.close()
 
 
+async def _launch_browser(p) -> Browser:
+    """Launch real Chrome when available (Cloudflare trusts its TLS/JS fingerprint),
+    falling back to bundled Chromium otherwise. Disabling the
+    AutomationControlled blink feature also removes a key bot-detection tell.
+    """
+    args = ["--disable-blink-features=AutomationControlled"]
+    try:
+        return await p.chromium.launch(headless=True, channel="chrome", args=args)
+    except Exception:
+        return await p.chromium.launch(headless=True, args=args)
+
+
 async def scrape(url: str, *, take_screenshot: bool = True) -> ScrapeResult:
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
+        browser = await _launch_browser(p)
         try:
             return await _scrape_one(browser, url, take_screenshot)
         finally:
@@ -246,7 +295,7 @@ async def scrape(url: str, *, take_screenshot: bool = True) -> ScrapeResult:
 
 async def scrape_many(urls: list[str], *, take_screenshot: bool = True) -> list[ScrapeResult]:
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
+        browser = await _launch_browser(p)
         try:
             return await asyncio.gather(*[_scrape_one(browser, u, take_screenshot) for u in urls])
         finally:
