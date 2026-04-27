@@ -14,6 +14,7 @@ if ROOT_ENV.exists():
     load_dotenv(ROOT_ENV)
 
 from app.db import init_db
+from app.routes import router as core_router
 
 
 @asynccontextmanager
@@ -39,6 +40,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(core_router)
+# Phase 5 / Agent A appends: app.include_router(buy_signal.router)
+# Phase 8a / Agent C appends: app.include_router(affiliate.router)
 
 
 @app.get("/")

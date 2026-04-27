@@ -24,6 +24,7 @@ class ListingOut(BaseModel):
     retailer: str
     url: str
     affiliate_url: str | None
+    variant: str | None = None
     last_price_cents: int | None = None
     last_seen_at: dt.datetime | None = None
 
@@ -46,6 +47,8 @@ class ItemOut(BaseModel):
 
 class HistoryPoint(BaseModel):
     retailer: str
+    listing_id: int
+    variant: str | None = None
     price_cents: int | None
     in_stock: bool
     scraped_at: dt.datetime

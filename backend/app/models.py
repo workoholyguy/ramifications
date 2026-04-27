@@ -37,6 +37,7 @@ class Listing(Base):
     retailer: Mapped[str] = mapped_column(String(32), index=True)
     url: Mapped[str] = mapped_column(String(1024), unique=True)
     affiliate_url: Mapped[str | None] = mapped_column(String(1024))
+    variant: Mapped[str | None] = mapped_column(String(64))  # e.g. "CL30", "CL36 RGB"
     last_seen_at: Mapped[dt.datetime | None]
 
     item: Mapped[Item] = relationship(back_populates="listings")
