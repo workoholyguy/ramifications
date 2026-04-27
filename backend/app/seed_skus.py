@@ -51,6 +51,11 @@ SEED: tuple[SeedItem, ...] = (
                 url="https://www.bhphotovideo.com/c/product/1830605-REG/corsair_cmk32gx5m2e6000z36_vengeance_32gb_2_x.html",
                 variant="CL36",
             ),
+            SeedListing(
+                retailer="microcenter",
+                url="https://www.microcenter.com/product/669660/corsair-vengeance-32gb-(2-x-16gb)-ddr5-6000-pc5-48000-cl30-dual-channel-desktop-memory-kit-cmk32gx5m2b6000c30-black",
+                variant="CL30",
+            ),
         ),
     ),
     SeedItem(
@@ -119,15 +124,20 @@ def find_seed_by_sku(canonical_sku: str) -> SeedItem | None:
 
 def _path_id(path: str) -> str | None:
     """Heuristic: most retailer product URLs end in a stable id segment.
-    Newegg: .../p/N82E16820982040 or .../p/0RN-0005-00JE0
-    B&H:    .../c/product/1830605-REG/corsair_..._x.html
+    Newegg:       .../p/N82E16820982040  or  .../p/0RN-0005-00JE0
+    B&H:          .../c/product/1830605-REG/corsair_..._x.html
+    Micro Center: .../product/669660/<slug>
     """
     parts = [p for p in path.split("/") if p]
     if not parts:
         return None
+
+    # Micro Center: /product/<numeric-id>/<slug>
+    if len(parts) >= 2 and parts[0] == "product" and parts[1].isdigit():
+        return parts[1]
+
     last = parts[-1]
-    if last.endswith(".html"):
+    if last.endswith(".html") and len(parts) >= 2:
         # B&H: product id is the second-to-last segment (e.g. "1830605-REG")
-        if len(parts) >= 2:
-            return parts[-2]
+        return parts[-2]
     return last
