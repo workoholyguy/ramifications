@@ -22,7 +22,7 @@ export function BuyButton({ listing }: { listing: ListingOut }) {
             {retailerLabel(listing.retailer)}
           </div>
           {listing.variant && (
-            <div className="text-[11px] text-[var(--muted-2)] font-mono">
+            <div className="text-[13px] text-[var(--muted-2)] font-mono">
               {listing.variant}
             </div>
           )}

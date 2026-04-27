@@ -3,6 +3,7 @@ import type {
   HistoryOut,
   BuySignalOut,
   OverpayOut,
+  AlertOut,
 } from "./types";
 
 const BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8000";
@@ -59,9 +60,17 @@ export const api = {
   buySignal: (id: number) =>
     request<BuySignalOut>(`/items/${id}/buy-signal`, { method: "POST" }),
   createAlert: (id: number, target_price_cents: number) =>
-    request<{ ok: boolean }>(`/items/${id}/alerts`, {
-      method: "POST",
-      body: JSON.stringify({ target_price_cents }),
+    request<{ id: number; item_id: number; target_price_cents: number }>(
+      `/items/${id}/alerts`,
+      {
+        method: "POST",
+        body: JSON.stringify({ target_price_cents }),
+      },
+    ),
+  listAlerts: (id: number) => request<AlertOut[]>(`/items/${id}/alerts`),
+  deleteAlert: (item_id: number, alert_id: number) =>
+    request<null>(`/items/${item_id}/alerts/${alert_id}`, {
+      method: "DELETE",
     }),
   recordPurchase: (
     id: number,

@@ -60,7 +60,7 @@ export function ItemCard({ item, onOpen }: Props) {
           </div>
         )}
         <div className="absolute top-3 left-3">
-          <code className="text-[10px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded border border-[var(--border)] bg-[rgba(10,10,11,0.6)] text-[var(--muted)] backdrop-blur">
+          <code className="text-[12px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded border border-[var(--border)] bg-[rgba(10,10,11,0.6)] text-[var(--muted)] backdrop-blur">
             {item.canonical_sku}
           </code>
         </div>
@@ -68,7 +68,7 @@ export function ItemCard({ item, onOpen }: Props) {
 
       <div className="p-4 sm:p-5 space-y-3">
         <div>
-          <div className="text-[10px] font-mono uppercase tracking-[0.16em] text-[var(--muted-2)]">
+          <div className="text-[12px] font-mono uppercase tracking-[0.16em] text-[var(--muted-2)]">
             {item.brand}
           </div>
           <div className="text-[15px] font-medium leading-snug truncate">
@@ -91,7 +91,7 @@ export function ItemCard({ item, onOpen }: Props) {
             )}
           </div>
           <div className="text-right">
-            <div className="text-[10px] font-mono uppercase tracking-wider text-[var(--muted-2)]">
+            <div className="text-[12px] font-mono uppercase tracking-wider text-[var(--muted-2)]">
               {item.listings.length} {item.listings.length === 1 ? "retailer" : "retailers"}
             </div>
           </div>

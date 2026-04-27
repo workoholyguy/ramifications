@@ -280,7 +280,9 @@ async def create_alert(
 
 @router.get("/items/{item_id}/alerts")
 async def list_alerts(item_id: int, db: AsyncSession = Depends(get_db)) -> list[dict]:
-    result = await db.execute(select(Alert).where(Alert.item_id == item_id))
+    result = await db.execute(
+        select(Alert).where(Alert.item_id == item_id).order_by(Alert.created_at.desc())
+    )
     alerts = result.scalars().all()
     return [
         {
@@ -291,3 +293,14 @@ async def list_alerts(item_id: int, db: AsyncSession = Depends(get_db)) -> list[
         }
         for a in alerts
     ]
+
+
+@router.delete("/items/{item_id}/alerts/{alert_id}", status_code=204)
+async def delete_alert(
+    item_id: int, alert_id: int, db: AsyncSession = Depends(get_db)
+) -> None:
+    alert = await db.get(Alert, alert_id)
+    if alert is None or alert.item_id != item_id:
+        raise HTTPException(404, "alert not found")
+    await db.delete(alert)
+    await db.commit()

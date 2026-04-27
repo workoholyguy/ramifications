@@ -88,10 +88,10 @@ export default function Home() {
         ) : (
           <>
             <div className="flex items-baseline justify-between mb-5">
-              <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--muted-2)]">
+              <div className="text-[12px] font-mono uppercase tracking-[0.18em] text-[var(--muted-2)]">
                 Tracked SKUs
               </div>
-              <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--muted-2)]">
+              <div className="text-[12px] font-mono uppercase tracking-[0.18em] text-[var(--muted-2)]">
                 {items.length} active
               </div>
             </div>
@@ -204,7 +204,7 @@ function ItemDetailModal({
               />
             ) : null}
             <div className="min-w-0">
-              <div className="text-[10px] font-mono uppercase tracking-[0.16em] text-[var(--muted-2)]">
+              <div className="text-[12px] font-mono uppercase tracking-[0.16em] text-[var(--muted-2)]">
                 {item.brand}
               </div>
               <h2 className="text-lg sm:text-xl font-semibold tracking-tight truncate">
@@ -216,7 +216,7 @@ function ItemDetailModal({
               <div className="mt-2 flex flex-wrap items-center gap-2">
                 {item.cheapest_retailer && item.cheapest_price_cents !== null ? (
                   <>
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--muted-2)]">
+                    <span className="text-[12px] font-mono uppercase tracking-wider text-[var(--muted-2)]">
                       cheapest now
                     </span>
                     <span className="text-sm font-mono font-medium text-[var(--accent)]">
@@ -263,7 +263,7 @@ function ItemDetailModal({
           <BuySignalCard itemId={item.id} />
 
           <div>
-            <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--muted-2)] mb-2">
+            <div className="text-[12px] font-mono uppercase tracking-[0.18em] text-[var(--muted-2)] mb-2">
               Buy at
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">

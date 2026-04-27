@@ -66,7 +66,7 @@ export function BuySignalCard({ itemId }: { itemId: number }) {
       <div className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-5">
         <div className="flex items-center gap-2 mb-3">
           <Sparkles size={14} className="text-[var(--accent)]" />
-          <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--muted-2)]">
+          <div className="text-[12px] font-mono uppercase tracking-[0.18em] text-[var(--muted-2)]">
             AI verdict
           </div>
         </div>
@@ -84,7 +84,7 @@ export function BuySignalCard({ itemId }: { itemId: number }) {
       <div className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-5">
         <div className="flex items-center gap-2 mb-3">
           <Sparkles size={14} className="text-[var(--accent)]" />
-          <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--muted-2)]">
+          <div className="text-[12px] font-mono uppercase tracking-[0.18em] text-[var(--muted-2)]">
             AI verdict
           </div>
         </div>
@@ -112,17 +112,17 @@ export function BuySignalCard({ itemId }: { itemId: number }) {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Sparkles size={14} className="text-[var(--accent)]" />
-          <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--muted-2)]">
+          <div className="text-[12px] font-mono uppercase tracking-[0.18em] text-[var(--muted-2)]">
             AI verdict
           </div>
           {signal.cached && (
-            <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--muted-2)]">
+            <span className="text-[12px] font-mono uppercase tracking-wider text-[var(--muted-2)]">
               · cached
             </span>
           )}
         </div>
         <span
-          className="text-[11px] font-mono px-2 py-0.5 rounded-full border"
+          className="text-[13px] font-mono px-2 py-0.5 rounded-full border"
           style={{
             borderColor: style.border,
             background: style.bg,

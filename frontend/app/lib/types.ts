@@ -67,3 +67,10 @@ export type TrackError = {
   supported_skus?: string[];
   hint?: string;
 };
+
+export type AlertOut = {
+  id: number;
+  target_price_cents: number;
+  created_at: string;
+  triggered_at: string | null;
+};

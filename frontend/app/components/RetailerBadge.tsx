@@ -11,7 +11,7 @@ export function RetailerBadge({
 }) {
   const color = retailerColor(retailer);
   const label = retailerLabel(retailer);
-  const dim = size === "xs" ? "text-[10px] px-1.5 py-0.5" : "text-[11px] px-2 py-0.5";
+  const dim = size === "xs" ? "text-[12px] px-1.5 py-0.5" : "text-[13px] px-2 py-0.5";
   return (
     <span
       className={`inline-flex items-center gap-1.5 rounded-full font-mono uppercase tracking-wider border ${dim}`}

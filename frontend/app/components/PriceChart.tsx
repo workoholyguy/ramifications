@@ -64,7 +64,7 @@ export function PriceChart({ points }: { points: HistoryPoint[] }) {
     <div className="rounded-lg border border-[var(--border)] bg-[var(--surface)] p-4">
       <div className="flex items-center justify-between mb-3">
         <div>
-          <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--muted-2)]">
+          <div className="text-[12px] font-mono uppercase tracking-[0.18em] text-[var(--muted-2)]">
             Price history
           </div>
           <div className="text-sm text-[var(--foreground)] mt-0.5">

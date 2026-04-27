@@ -40,7 +40,7 @@ export function TrackForm({ onTracked }: Props) {
   return (
     <section className="mx-auto max-w-6xl px-5 sm:px-8 pt-10 sm:pt-16 pb-6">
       <div className="max-w-2xl">
-        <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--muted-2)] mb-3">
+        <div className="text-[12px] font-mono uppercase tracking-[0.18em] text-[var(--muted-2)] mb-3">
           DDR5 / cross-retailer / live
         </div>
         <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight leading-[1.05]">
@@ -111,7 +111,7 @@ export function TrackForm({ onTracked }: Props) {
                     {err.supported_skus.map((s) => (
                       <code
                         key={s}
-                        className="text-[11px] font-mono px-2 py-0.5 rounded border border-[var(--border)] bg-[var(--surface-2)] text-[var(--muted)]"
+                        className="text-[13px] font-mono px-2 py-0.5 rounded border border-[var(--border)] bg-[var(--surface-2)] text-[var(--muted)]"
                       >
                         {s}
                       </code>

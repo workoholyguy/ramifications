@@ -4,17 +4,21 @@
   --background: #0a0a0b;
   --surface: #0f0f12;
   --surface-2: #141418;
-  --border: #27272a;
-  --border-strong: #3f3f46;
-  --foreground: #ededed;
-  --muted: #a1a1aa;
-  --muted-2: #71717a;
+  --border: #3f3f46;
+  --border-strong: #52525b;
+  --foreground: #fafafa;
+  /* muted text bumped for legibility on dark surfaces */
+  --muted: #e4e4e7;
+  --muted-2: #c4c4c8;
   --accent: #8b5cf6;
   --accent-2: #6366f1;
   --success: #22c55e;
   --warning: #f59e0b;
   --danger: #ef4444;
 }
+
+/* slightly larger base body text for readability */
+html { font-size: 17px; }
 
 @theme inline {
   --color-background: var(--background);

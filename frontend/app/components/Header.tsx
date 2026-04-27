@@ -25,7 +25,7 @@ export function Header({ count, onRefreshAll, refreshing }: Props) {
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="hidden sm:inline-flex items-center gap-1.5 text-xs text-[var(--muted)] font-mono">
+          <span className="hidden sm:inline-flex items-center gap-1.5 text-sm text-[var(--muted)] font-mono">
             <span className="size-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]" />
             {count} {count === 1 ? "SKU" : "SKUs"} tracked
           </span>

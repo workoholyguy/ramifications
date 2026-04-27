@@ -58,7 +58,7 @@ export function OverpayCard({ item }: { item: ItemOut }) {
       >
         <div className="flex items-center gap-2">
           <Receipt size={14} className="text-[var(--accent)]" />
-          <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--muted-2)]">
+          <div className="text-[12px] font-mono uppercase tracking-[0.18em] text-[var(--muted-2)]">
             I bought this
           </div>
         </div>
@@ -86,7 +86,7 @@ export function OverpayCard({ item }: { item: ItemOut }) {
           )}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <div>
-              <label className="block text-[10px] font-mono uppercase tracking-wider text-[var(--muted-2)] mb-1">
+              <label className="block text-[12px] font-mono uppercase tracking-wider text-[var(--muted-2)] mb-1">
                 Retailer
               </label>
               <select
@@ -105,7 +105,7 @@ export function OverpayCard({ item }: { item: ItemOut }) {
               </select>
             </div>
             <div>
-              <label className="block text-[10px] font-mono uppercase tracking-wider text-[var(--muted-2)] mb-1">
+              <label className="block text-[12px] font-mono uppercase tracking-wider text-[var(--muted-2)] mb-1">
                 Date
               </label>
               <input
@@ -116,7 +116,7 @@ export function OverpayCard({ item }: { item: ItemOut }) {
               />
             </div>
             <div>
-              <label className="block text-[10px] font-mono uppercase tracking-wider text-[var(--muted-2)] mb-1">
+              <label className="block text-[12px] font-mono uppercase tracking-wider text-[var(--muted-2)] mb-1">
                 Price
               </label>
               <div className="relative">
