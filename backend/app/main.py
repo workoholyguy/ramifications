@@ -31,11 +31,13 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+_explicit_origins = os.environ.get("CORS_ORIGINS")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.environ.get(
-        "CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000"
-    ).split(","),
+    # Explicit origins via env var, OR a regex that matches any localhost port.
+    # Workshop dev rotates between 3000/3001/etc when ports are taken — regex saves restarts.
+    allow_origins=_explicit_origins.split(",") if _explicit_origins else [],
+    allow_origin_regex=None if _explicit_origins else r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
