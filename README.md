@@ -2,9 +2,20 @@
 
 > _don't suffer the consequences._
 
-A DDR5 RAM **cross-retailer** price tracker. Paste a Newegg / B&H link and see the same SKU at every retailer, with an AI verdict telling you whether to pull the trigger or wait. If you already bought it, find out if the price has dropped since — and get a one-click link to your retailer's price-match form.
+A DDR5 RAM **cross-retailer** price tracker. Paste a Newegg / B&H / Micro Center link and see the same SKU at every retailer, with an AI verdict telling you whether to pull the trigger or wait. If you already bought it, find out if the price has dropped since — and get a one-click link to your retailer's price-match form.
 
 Built in 90 minutes for the [progsu](https://progsu.com) Claude Code workshop, 2026-04-27.
+
+- **Live:** https://ramifications.vercel.app/
+- **Source:** https://github.com/workoholyguy/ramifications
+
+![home page with 4 tracked DDR5 SKUs and per-card sparklines](./screenshots/02-grid-full.png)
+
+Click into any card and the cross-retailer chart + AI verdict open in a modal. The Corsair Vengeance card surfaces a **$196 spread** for the same product line — Newegg $565.99 / B&H $453.99 / Micro Center $369.99:
+
+![Corsair Vengeance detail view: 3-line chart, AI BUY verdict at 78% confidence, per-retailer buy buttons](./screenshots/03-detail-modal.png)
+
+The AI verdict isn't vibes — Claude Haiku 4.5 reads the full price history and quotes specific 30-day-low percentages in its reasoning.
 
 ---
 
