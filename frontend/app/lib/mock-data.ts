@@ -141,7 +141,7 @@ export const MOCK_ITEMS: ItemOut[] = [
     speed_mts: 6000,
     cas: 30,
     image_url:
-      "https://c1.neweggimages.com/ProductImageCompressAll300/3C6-034Y-00350_1.jpg",
+      "https://c1.neweggimages.com/ProductImage/BR2DD2504230WA9KK3B.jpg",
     cheapest_price_cents: 135699,
     cheapest_retailer: "newegg",
     listings: [
@@ -165,7 +165,7 @@ export const MOCK_ITEMS: ItemOut[] = [
     speed_mts: 5600,
     cas: 46,
     image_url:
-      "https://c1.neweggimages.com/ProductImageCompressAll300/0RN-0005-00JE0_1.jpg",
+      "https://c1.neweggimages.com/ProductImage/V1DSD2505130WE2XM97.jpg",
     cheapest_price_cents: 79552,
     cheapest_retailer: "newegg",
     listings: [
@@ -189,7 +189,7 @@ export const MOCK_ITEMS: ItemOut[] = [
     speed_mts: 6000,
     cas: 30,
     image_url:
-      "https://c1.neweggimages.com/ProductImageCompressAll300/N82E16820242860_1.jpg",
+      "https://c1.neweggimages.com/ProductImage/20-242-743-01.jpg",
     cheapest_price_cents: 48999,
     cheapest_retailer: "newegg",
     listings: [
