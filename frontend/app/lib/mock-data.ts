@@ -15,6 +15,7 @@ import type {
   HistoryOut,
   BuySignalOut,
   HistoryPoint,
+  OverpayOut,
 } from "./types";
 
 // deterministic prng (mulberry32) so demo data is stable across reloads
@@ -271,6 +272,64 @@ export const MOCK_HISTORY: Record<number, HistoryOut> = {
     points: ITEM_4_HISTORY,
   },
 };
+
+// Hardcoded price-match policies — mirrors backend/app/affiliate.py
+const PRICE_MATCH_POLICIES: Record<string, string> = {
+  newegg:
+    "Newegg honors price-match within 30 days. Email customer service or use the Returns & Refunds page.",
+  bestbuy:
+    "Best Buy honors price-match within 14 days. File at https://www.bestbuy.com/site/help-topics/price-match-guarantee/pcmcat297300050000.c",
+  microcenter:
+    "Micro Center honors price-match within 30 days at the store.",
+};
+
+/**
+ * Client-side overpay calculator for demo mode.
+ * Mirrors the math in backend/app/affiliate.py::overpay so the deployed page
+ * gives the same answer as the local backend would.
+ */
+export function computeMockOverpay(
+  itemId: number,
+  purchase: {
+    listing_id: number;
+    purchase_date: string;
+    purchase_price_cents: number;
+  },
+): OverpayOut {
+  const item = MOCK_ITEMS.find((i) => i.id === itemId);
+  const purchaseListing = item?.listings.find(
+    (l) => l.id === purchase.listing_id,
+  );
+
+  let minPrice: number | null = null;
+  let minRetailer: string | null = null;
+  if (item) {
+    for (const l of item.listings) {
+      if (
+        l.last_price_cents !== null &&
+        (minPrice === null || l.last_price_cents < minPrice)
+      ) {
+        minPrice = l.last_price_cents;
+        minRetailer = l.retailer;
+      }
+    }
+  }
+
+  const delta =
+    minPrice !== null ? minPrice - purchase.purchase_price_cents : null;
+  const purchaseRetailer = purchaseListing?.retailer ?? "unknown";
+  const policy = PRICE_MATCH_POLICIES[purchaseRetailer] ?? null;
+
+  return {
+    purchase_price_cents: purchase.purchase_price_cents,
+    purchase_date: purchase.purchase_date,
+    purchase_retailer: purchaseRetailer,
+    current_min_price_cents: minPrice,
+    current_min_retailer: minRetailer,
+    delta_cents: delta,
+    price_match_policy: policy,
+  };
+}
 
 export const MOCK_BUY_SIGNALS: Record<number, BuySignalOut> = {
   1: {

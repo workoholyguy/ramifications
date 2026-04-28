@@ -9,6 +9,7 @@ import {
   MOCK_ITEMS,
   MOCK_HISTORY,
   MOCK_BUY_SIGNALS,
+  computeMockOverpay,
 } from "./mock-data";
 
 const BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8000";
@@ -27,6 +28,14 @@ function flipDemoMode() {
 function isNetworkError(e: unknown): boolean {
   return e instanceof TypeError;
 }
+
+// Last purchase the user submitted in this tab — used by the overpay mock.
+let _lastPurchase: {
+  item_id: number;
+  listing_id: number;
+  purchase_date: string;
+  purchase_price_cents: number;
+} | null = null;
 
 export class ApiError extends Error {
   status: number;
@@ -132,17 +141,41 @@ export const api = {
     request<null>(`/items/${item_id}/alerts/${alert_id}`, {
       method: "DELETE",
     }),
-  recordPurchase: (
+  recordPurchase: async (
     id: number,
     payload: {
       listing_id: number;
       purchase_date: string;
       purchase_price_cents: number;
     },
-  ) =>
-    request<{ ok: boolean }>(`/items/${id}/purchase`, {
-      method: "POST",
-      body: JSON.stringify(payload),
-    }),
-  overpay: (id: number) => request<OverpayOut>(`/items/${id}/overpay`),
+  ) => {
+    try {
+      return await request<{ ok: boolean }>(`/items/${id}/purchase`, {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+    } catch (e) {
+      if (isNetworkError(e)) {
+        flipDemoMode();
+        _lastPurchase = { item_id: id, ...payload };
+        return { ok: true };
+      }
+      throw e;
+    }
+  },
+  overpay: async (id: number) => {
+    try {
+      return await request<OverpayOut>(`/items/${id}/overpay`);
+    } catch (e) {
+      if (
+        isNetworkError(e) &&
+        _lastPurchase &&
+        _lastPurchase.item_id === id
+      ) {
+        flipDemoMode();
+        return computeMockOverpay(id, _lastPurchase);
+      }
+      throw e;
+    }
+  },
 };
